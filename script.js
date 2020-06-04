@@ -8,11 +8,16 @@ function initPrintings(json) {
 function load(lines) {
 	cards = [];
 	let unrecognized = [];
+	
+	let viewer = document.getElementById('viewer');
+	clear(viewer);
+	
 	for (let line of lines) {
 		let trimmed = line.trim();
 		if (trimmed && !trimmed.startsWith('#')) {
 			if (printings[trimmed]) {
-				cards.push({ name: trimmed, index: 0 });
+				let card = createCard(trimmed);
+				cards.push(card);
 			} else {
 				unrecognized.push(line);
 			}
@@ -22,7 +27,9 @@ function load(lines) {
 	let message = document.getElementById('message');
 	if (cards.length) {
 		hide(message);
-		loadImages();
+		for (let card of cards) {
+			viewer.appendChild(card.node);
+		}
 		if (unrecognized.length) {
 			showUnrecognizedCards(unrecognized);
 		}
@@ -38,26 +45,31 @@ function clear(node) {
 	}
 }
 
-function loadImages(card) {
-	let viewer = document.getElementById('viewer');
-	clear(viewer);
-	for (let card of cards) {
-		let pic = document.createElement('img');
-		pic.className = 'small';
-		pic.src = getSrc(printings[card.name][0].id);
-		pic.onclick = function(e) {
-			if (e.ctrlKey) {
-				selected = card;
-				showPrintingsDialog(card, pic);
-			} else {
-				let mod = printings[card.name].length
-				let dir = e.shiftKey ? -1 : 1;
-				card.index = (((card.index + dir) % mod) + mod) % mod;
-				pic.src = getSrc(printings[card.name][card.index].id);
-			}
-		};
-		viewer.appendChild(pic);
+function createCard(name) {
+	let pic = document.createElement('img');
+	
+	let card = {
+		name: name,
+		index: 0,
+		node: pic
+	};
+	
+	pic.className = 'small';
+	pic.src = getSrc(printings[card.name][0].id);
+	pic.onclick = function(e) {
+		rotateImage(card, e.shiftKey ? -1 : 1);
+	};
+	pic.onmouseover = function() {
+		selected = card;
 	}
+
+	return card;
+}
+
+function rotateImage(card, dir) {
+	let mod = printings[card.name].length
+	card.index = (((card.index + dir) % mod) + mod) % mod;
+	card.node.src = getSrc(printings[card.name][card.index].id);
 }
 
 function getSrc(id) {
@@ -128,11 +140,18 @@ function hide(node) {
 
 window.onkeydown = function(e) {
 	switch (e.key) {
+		case 'ArrowLeft':
+			rotateImage(selected, -1);
+			break;
+		case 'ArrowRight':
+			rotateImage(selected, 1);
+			break;
 		case 'Enter':
 			navigator.clipboard.writeText(cards.map(function(card) {
 				let printing = printings[card.name][card.index];
 				return card.name + ' (' + printing.code + ')';
 			}).join('\n'));
+			break;
 		default:
 	}
 }
