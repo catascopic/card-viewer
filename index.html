@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<html ondrop="handleFileSelect(event)" ondragover="handleDragOver(event)">
+<head>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+<!-- <script src="diacritics.js"></script> -->
+<script src="script.js"></script>
+<script src="printings.jsonp"></script>
+<title>Card Viewer</title>
+
+</head>
+<body>
+
+<div id="message">Drag a file here</div>
+<div class="dialogMask hide" id="unrecognized">
+	<div class="dialog">
+		<div>Unrecognized cards:</div>
+		<ol id="unrecognizedList">
+		</ol>
+		<button onclick="closeDialog()">Close</button>
+	</div>
+</div>
+<div class="dialogMask hide" id="printings">
+	<div class="dialog">
+		<div id="printingList"></div>
+	</div>
+</div>
+<div id="viewer"></div>
+
+</body>
+</html>

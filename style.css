@@ -1,0 +1,69 @@
+html, body {
+	margin: 0;
+	height: 100%;
+	background-color: #7D9EC0;
+}
+
+#message {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: monospace;
+	font-size: 20px;
+	outline: 2px dotted black;
+	outline-offset: -40px;
+}
+
+.dialogMask {
+	position: absolute;
+	top:0;
+	left:0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.4);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	overflow: auto;
+	z-index: 99;
+}
+
+.dialog {
+	background-color: white;
+	padding: 4px;
+	font-family: monospace;
+	font-size: 14px;
+}
+
+.printingTag {
+	display: inline-block;
+	padding: 4px;
+	font-size: 16px;
+	border: 2px solid black;
+	margin: 2px;
+}
+
+#viewer {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 2px;
+}
+
+.small {
+	border-radius: 6px;
+	margin: 2px;
+}
+
+.image {
+	display: inline-block;
+}
+
+.hide {
+	
+	/* I don't like this, but it's the easiest way. 
+	hidden=true doesn't work when you specify the display property.	*/
+	
+	display: none !important;
+}
