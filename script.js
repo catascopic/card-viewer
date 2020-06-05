@@ -57,6 +57,7 @@ function createCard(name) {
 	pic.className = 'small';
 	pic.src = getSrc(printings[card.name][0].id);
 	pic.onclick = function(e) {
+		// ctrl + click shows all printings
 		rotateImage(card, e.shiftKey ? -1 : 1);
 	};
 	pic.onmouseover = function() {
